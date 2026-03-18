@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:24px}
+.header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
+.header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
+
+.columns{display:flex;gap:12px;margin-bottom:20px}
+
+.col{flex:1;border-radius:10px;border:2px solid #ecedea;background:#fff;cursor:pointer;transition:all .25s ease;overflow:hidden}
+.col:hover{border-color:#b0e8f7;box-shadow:0 2px 12px rgba(128,234,255,.15)}
+.col.active{border-color:#50D0ED;box-shadow:0 4px 20px rgba(128,234,255,.25)}
+
+.col-top{padding:16px 16px 14px;text-align:center;transition:background .2s}
+.col.active .col-top{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+
+.col-icon{font-size:36px;margin-bottom:6px;display:block}
+.col-name{font-size:18px;font-weight:700;color:#000;line-height:1.3}
+.col.active .col-name{color:#0A3D4F}
+
+.col-hint{font-size:12px;color:#999;margin-top:6px;transition:opacity .2s}
+.col.active .col-hint{opacity:0;height:0;margin:0;overflow:hidden}
+
+.col-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;padding:0 16px}
+.col.active .col-body{max-height:900px;padding:0 16px 18px}
+
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:rgba(0,60,80,.45);margin-bottom:6px;margin-top:14px}
+.section-label:first-child{margin-top:0}
+
+.how-item{font-size:15px;color:#333;font-weight:500;line-height:1.5;padding:4px 0 4px 20px;position:relative}
+.how-item::before{content:'→';position:absolute;left:0;color:#50D0ED;font-weight:700}
+
+.best-item{font-size:14px;color:#333;font-weight:500;line-height:1.5;padding:3px 0 3px 20px;position:relative}
+.best-item::before{content:'✓';position:absolute;left:0;color:#10B981;font-weight:700}
+
+.metrics{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.metric{flex:1;min-width:0;background:#f7f7f5;border-radius:8px;padding:10px 10px;text-align:center}
+.metric-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:2px}
+.metric-value{font-size:14px;font-weight:700;color:#0A3D4F}
+
+.scenario{margin-top:14px;background:#f7f7f5;border-left:4px solid #80EAFF;border-radius:0 8px 8px 0;padding:12px 14px}
+.scenario-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(0,60,80,.45);margin-bottom:4px}
+.scenario-text{font-size:14px;color:#555;font-weight:500;line-height:1.5}
+
+.bottom{background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:16px 20px;text-align:center}
+.bottom-main{font-size:16px;font-weight:700;color:#000;margin-bottom:6px}
+.bottom-example{font-size:14px;color:#555;font-weight:500;line-height:1.5}
+.bottom-example strong{color:#0A3D4F;font-weight:600}
+
+@media(max-width:680px){
+  .columns{flex-direction:column}
+  .col.active .col-body{max-height:1200px}
+  .metrics{flex-direction:column}
+  .metric{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Three sourcing approaches</div>
+  <div class="header-title">Your Sourcing Toolkit</div>
+  <div class="header-sub">Click each approach to explore how it works, when to use it, and a real scenario</div>
+</div>
+
+<div class="columns" id="columns"></div>
+
+<div class="bottom">
+  <div class="bottom-main">You can use one, two, or all three approaches simultaneously!</div>
+  <div class="bottom-example"><strong>Example:</strong> Post the job publicly <strong>AND</strong> source on LinkedIn <strong>AND</strong> engage an agency for a critical senior role.</div>
+</div>
+
+<script>
+var DATA=[
+  {
+    id:0,
+    icon:"📢",
+    name:"Post & Wait",
+    how:[
+      "Post job on LinkedIn, job boards, careers page",
+      "Review incoming applications in Lever",
+      "Wait for candidates to come to you"
+    ],
+    best:[
+      "Roles with active applicant market",
+      "Junior to mid-level positions",
+      "Common skill sets",
+      "When you have time (60+ days)"
+    ],
+    effort:"Low — 1-2 hrs/week",
+    timeline:"4–8 weeks",
+    scenario:"You're hiring a Marketing Coordinator. The role is straightforward, applicants are plentiful — post it and let Lever collect résumés while you focus on other work."
+  },
+  {
+    id:1,
+    icon:"🔍",
+    name:"Proactive Sourcing",
+    how:[
+      "Use LinkedIn Recruiter to search profiles",
+      "Reach out to passive candidates directly",
+      "Build relationships with potential hires"
+    ],
+    best:[
+      "Niche or specialized skills",
+      "Senior level positions",
+      "Passive candidates not actively looking",
+      "Competitive talent markets"
+    ],
+    effort:"High — 3-5 hrs/week",
+    timeline:"3–6 weeks",
+    scenario:"You need a Senior DevOps Engineer with Kubernetes expertise. Few people are actively job-hunting — you'll need to find them on LinkedIn and pitch the opportunity directly."
+  },
+  {
+    id:2,
+    icon:"🤝",
+    name:"Agency Support",
+    how:[
+      "External recruiters source candidates for you",
+      "Pre-screened candidates submitted to review",
+      "You interview and make the final decision"
+    ],
+    best:[
+      "Urgent needs (< 30 days)",
+      "Highly specialized or executive roles",
+      "Geographic challenges",
+      "When you lack bandwidth"
+    ],
+    effort:"Low — 1-2 hrs/week reviewing",
+    cost:"~20-30% of first-year salary (YOUR dept budget)",
+    timeline:"3–5 weeks",
+    scenario:"Your VP of Sales resigned unexpectedly. The role must be filled in 30 days. An agency brings you a shortlist of vetted executives while you keep operations running."
+  }
+];
+
+var sel=null;
+
+function render(){
+  var el=document.getElementById('columns');
+  el.innerHTML=DATA.map(function(d){
+    var isActive=sel===d.id;
+    return '<div class="col'+(isActive?' active':'')+'" data-id="'+d.id+'">'+
+      '<div class="col-top">'+
+        '<span class="col-icon">'+d.icon+'</span>'+
+        '<div class="col-name">'+d.name+'</div>'+
+        '<div class="col-hint">Click to explore →</div>'+
+      '</div>'+
+      '<div class="col-body">'+
+        '<div class="section-label">How it works</div>'+
+        d.how.map(function(h){return '<div class="how-item">'+h+'</div>'}).join('')+
+        '<div class="section-label">Best for</div>'+
+        d.best.map(function(b){return '<div class="best-item">'+b+'</div>'}).join('')+
+        '<div class="metrics">'+
+          '<div class="metric"><div class="metric-label">Effort</div><div class="metric-value">'+d.effort+'</div></div>'+
+          (d.cost?'<div class="metric"><div class="metric-label">Cost</div><div class="metric-value">'+d.cost+'</div></div>':'')+
+          '<div class="metric"><div class="metric-label">Timeline</div><div class="metric-value">'+d.timeline+'</div></div>'+
+        '</div>'+
+        '<div class="scenario">'+
+          '<div class="scenario-label">Example scenario</div>'+
+          '<div class="scenario-text">'+d.scenario+'</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  el.querySelectorAll('.col').forEach(function(c){
+    c.addEventListener('click',function(){
+      var id=parseInt(c.dataset.id);
+      sel=sel===id?null:id;
+      render();
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
