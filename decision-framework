@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:24px}
+.header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
+.header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
+
+.matrix-wrap{position:relative;margin-bottom:20px}
+
+.axis-y{position:absolute;left:-2px;top:0;bottom:0;width:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+.axis-y-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999}
+.axis-y-arrow{font-size:10px;color:#999;margin-bottom:4px}
+.axis-y-bottom{font-size:9px;color:#bbb;writing-mode:vertical-rl;transform:rotate(180deg);margin-top:4px}
+
+.axis-x{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;padding-left:32px}
+.axis-x-left{font-size:9px;color:#bbb}
+.axis-x-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999}
+.axis-x-arrow{font-size:10px;color:#999}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;margin-left:32px}
+
+.cell{border-radius:10px;padding:16px 16px 14px;cursor:pointer;border:2px solid #ecedea;background:#fff;transition:all .25s ease;position:relative;overflow:hidden}
+.cell:hover{border-color:#b0e8f7;box-shadow:0 2px 12px rgba(128,234,255,.12)}
+.cell.active{border-color:#50D0ED;box-shadow:0 4px 20px rgba(128,234,255,.25)}
+
+.cell-corner{position:absolute;top:0;right:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px;border-radius:0 8px 0 10px;background:#f7f7f5;transition:background .2s}
+.cell.active .cell-corner{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+
+.cell-example-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:4px}
+.cell-example{font-size:15px;font-weight:600;color:#555;line-height:1.4;margin-bottom:10px;padding-right:50px}
+
+.cell-rec{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:6px}
+.rec-green{background:#E0F7FF;color:#0E7490}
+.rec-yellow{background:#FEF9C3;color:#854D0E}
+.rec-orange{background:#FFEDD5;color:#9A3412}
+.rec-red{background:#FEE2E2;color:#991B1B}
+
+.cell-hint{font-size:12px;color:#aaa;margin-top:6px;transition:opacity .2s}
+.cell.active .cell-hint{opacity:0;height:0;margin:0;overflow:hidden}
+
+.cell-detail{max-height:0;overflow:hidden;transition:max-height .4s ease;margin-top:0}
+.cell.active .cell-detail{max-height:300px;margin-top:10px}
+
+.detail-section{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(0,60,80,.45);margin-bottom:4px;margin-top:10px}
+.detail-section:first-child{margin-top:0}
+.detail-text{font-size:14px;color:#333;font-weight:500;line-height:1.5}
+
+.detail-budget{margin-top:10px;background:#f7f7f5;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:10px 12px}
+.detail-budget-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#92400E;margin-bottom:2px}
+.detail-budget-value{font-size:14px;font-weight:700;color:#B45309}
+
+@media(max-width:580px){
+  .grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .axis-y{display:none}
+  .axis-x{padding-left:0}
+  .grid{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Sourcing strategy</div>
+  <div class="header-title">Decision Framework</div>
+  <div class="header-sub">Click any quadrant to see the recommended approach and why</div>
+</div>
+
+<div class="matrix-wrap">
+  <div class="axis-y">
+    <div class="axis-y-arrow">▲</div>
+    <div class="axis-y-label">Role Complexity</div>
+    <div class="axis-y-bottom">Standard</div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="axis-x">
+    <div class="axis-x-left">Standard timeline</div>
+    <div class="axis-x-label">— Urgency →</div>
+    <div class="axis-x-arrow">Urgent</div>
+  </div>
+</div>
+
+<script>
+var CELLS=[
+  {
+    pos:0,
+    icon:"🟢",
+    example:"Senior Backend Engineer (specific tech stack)",
+    rec:"Post + LinkedIn Sourcing",
+    recClass:"rec-yellow",
+    why:"May need to reach passive candidates who aren't actively job-hunting.",
+    budget:null,
+    hint:"Specialized + Standard timeline"
+  },
+  {
+    pos:1,
+    icon:"🔴",
+    example:"VP Engineering, Blockchain Architect",
+    rec:"All three: Post + LinkedIn + Agency",
+    recClass:"rec-red",
+    why:"Maximize reach — speed is critical and these profiles are hard to find.",
+    budget:"Typical agency fee: 20–30% of the role's annual salary",
+    hint:"Specialized + Urgent"
+  },
+  {
+    pos:2,
+    icon:"⚪",
+    example:"Junior Developer, Marketing Coordinator",
+    rec:"Post & Wait",
+    recClass:"rec-green",
+    why:"Active applicant market with enough time to let candidates come to you.",
+    budget:null,
+    hint:"Standard + Standard timeline"
+  },
+  {
+    pos:3,
+    icon:"🟠",
+    example:"Customer Support Manager (backfill)",
+    rec:"Post + Agency (if available)",
+    recClass:"rec-orange",
+    why:"Speed matters, but the skills are common enough to find quickly.",
+    budget:"Typical agency fee: 20–30% of the role's annual salary",
+    hint:"Standard + Urgent"
+  }
+];
+
+var sel=null;
+
+function render(){
+  var el=document.getElementById('grid');
+  el.innerHTML=CELLS.map(function(c,i){
+    var isActive=sel===i;
+    var budgetHtml='';
+    if(c.budget){
+      budgetHtml='<div class="detail-budget">'+
+        '<div class="detail-budget-label">Budget impact</div>'+
+        '<div class="detail-budget-value">'+c.budget+'</div>'+
+      '</div>';
+    }
+    return '<div class="cell'+(isActive?' active':'')+'" data-idx="'+i+'">'+
+      '<div class="cell-corner">'+c.icon+'</div>'+
+      '<div class="cell-example-tag">Example roles</div>'+
+      '<div class="cell-example">'+c.example+'</div>'+
+      '<div class="cell-rec '+c.recClass+'">'+c.rec+'</div>'+
+      '<div class="cell-hint">'+c.hint+' — click to expand</div>'+
+      '<div class="cell-detail">'+
+        '<div class="detail-section">Why this approach</div>'+
+        '<div class="detail-text">'+c.why+'</div>'+
+        budgetHtml+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  el.querySelectorAll('.cell').forEach(function(c){
+    c.addEventListener('click',function(){
+      var idx=parseInt(c.dataset.idx);
+      sel=sel===idx?null:idx;
+      render();
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
