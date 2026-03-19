@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:24px}
+.header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
+.header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
+
+.steps{display:flex;flex-direction:column;gap:10px}
+
+.step{border:2px solid #ecedea;border-radius:10px;background:#fff;cursor:pointer;transition:all .25s ease;overflow:hidden}
+.step:hover{border-color:#b0e8f7;box-shadow:0 2px 12px rgba(128,234,255,.12)}
+.step.active{border-color:#50D0ED;box-shadow:0 4px 20px rgba(128,234,255,.25)}
+
+.step-top{display:flex;align-items:center;gap:12px;padding:14px 18px}
+.step.active .step-top{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+
+.step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;background:#f4f4f3;color:#999;border:2px solid #ecedea}
+.step.active .step-num{background:#fff;color:#0A3D4F;border-color:#50D0ED}
+
+.step-info{flex:1}
+.step-title{font-size:18px;font-weight:700;color:#000;line-height:1.3}
+.step.active .step-title{color:#0A3D4F}
+.step-subtitle{font-size:13px;color:#777;margin-top:1px}
+.step.active .step-subtitle{color:rgba(0,60,80,.55)}
+
+.step-arrow{font-size:18px;color:#ccc;transition:transform .25s;flex-shrink:0}
+.step.active .step-arrow{transform:rotate(90deg);color:#0A3D4F}
+
+.step-body{max-height:0;overflow:hidden;transition:max-height .45s ease,padding .3s ease;padding:0 18px}
+.step.active .step-body{max-height:2000px;padding:0 18px 20px}
+
+.divider{height:1px;background:#ecedea;margin-bottom:16px}
+
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:rgba(0,60,80,.45);margin-bottom:8px;margin-top:16px}
+.section-label:first-child{margin-top:0}
+
+.action-item{font-size:18px;color:#333;font-weight:500;line-height:1.55;padding:4px 0 4px 22px;position:relative}
+.action-item::before{content:'\2022';position:absolute;left:4px;color:#50D0ED;font-weight:700}
+
+.why-block{background:#f7f7f5;border-left:4px solid #80EAFF;border-radius:0 10px 10px 0;padding:14px 16px;margin-top:14px}
+.why-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(0,60,80,.45);margin-bottom:4px}
+.why-text{font-size:18px;color:#555;font-weight:500;line-height:1.55}
+
+.stat-row{display:flex;gap:10px;margin-top:12px}
+.stat-card{flex:1;background:#f7f7f5;border-radius:8px;padding:12px 14px;text-align:center}
+.stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:2px}
+.stat-value{font-size:18px;font-weight:700;color:#0A3D4F}
+
+.critical-block{background:#FEE2E2;border-left:4px solid #EF4444;border-radius:0 10px 10px 0;padding:14px 16px;margin-top:12px}
+.critical-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#991B1B;margin-bottom:4px}
+.critical-text{font-size:18px;color:#991B1B;font-weight:600;line-height:1.55}
+
+.info-block{background:#E0F7FF;border-radius:8px;padding:12px 16px;margin-top:12px}
+.info-text{font-size:18px;font-weight:500;color:#0E7490;line-height:1.5}
+
+@media(max-width:580px){
+  .stat-row{flex-direction:column}
+  .step-top{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">LinkedIn Recruiter</div>
+  <div class="header-title">Your Step-by-Step Workflow</div>
+  <div class="header-sub">Click each step to see what to do and why it matters</div>
+</div>
+
+<div class="steps" id="steps"></div>
+
+<script>
+var DATA=[
+  {
+    num:1,
+    title:"Create a Project",
+    subtitle:"Your organizational hub for each role",
+    actions:[
+      "Type role description in search bar",
+      "Select \u201CCreate a New AI Assisted Project\u201D",
+      "Fill in: job title, location, seniority, skills",
+      "Set project visibility (private or team)"
+    ],
+    why:"Projects keep all your work organized. Without a project, you\u2019ll lose track of candidates and searches.",
+    stats:null,
+    critical:null,
+    info:null
+  },
+  {
+    num:2,
+    title:"Search & Filter",
+    subtitle:"Find the right candidates",
+    actions:[
+      "Use AI Chat for plain language searches (\u201Ccandidates with startup experience\u201D)",
+      "Or use manual filters (skills, location, company, years of experience)",
+      "Apply Spotlights to prioritize responsive candidates",
+      "Review results and refine"
+    ],
+    why:"Quality search = quality candidates. Don\u2019t over-filter (0 results) or under-filter (1000+ results).",
+    stats:null,
+    critical:null,
+    info:null
+  },
+  {
+    num:3,
+    title:"Review & Organize",
+    subtitle:"Evaluate profiles and build your pipeline",
+    actions:[
+      "Review full profiles (you have access to everyone)",
+      "Save to Pipeline: Good fits you want to contact",
+      "Hide: Not a fit (only hidden in this project)",
+      "Add tags: Special notes (\u201Cstartup experience\u201D, \u201Cavailable immediately\u201D)",
+      "Add notes: Track observations, @mention teammates"
+    ],
+    why:"Organized pipeline = easier follow-up. You\u2019ll forget details without notes.",
+    stats:null,
+    critical:null,
+    info:null
+  },
+  {
+    num:4,
+    title:"Send InMail",
+    subtitle:"Reach out with compelling messages",
+    actions:[
+      "Personalize every message (reference their background)",
+      "Explain the role and why they\u2019re a fit",
+      "Show what\u2019s exciting about the opportunity",
+      "Call to action: suggest a brief call",
+      "Individual messages > bulk messaging"
+    ],
+    why:"Personalized InMail gets 3x higher response rates. Worth the extra 5 minutes.",
+    stats:[
+      {label:"Personalized",value:"25\u201335%"},
+      {label:"Generic / bulk",value:"10\u201315%"}
+    ],
+    critical:null,
+    info:null
+  },
+  {
+    num:5,
+    title:"Export to Lever",
+    subtitle:"Move interested candidates to your ATS",
+    actions:[
+      "After candidate responds positively \u2192 export",
+      "Single: Three dots (\u22EE) \u2192 Export \u2192 Lever",
+      "Bulk: Select multiple in Pipeline \u2192 Export \u2192 Lever",
+      "What transfers: Profile, message history, tags, notes"
+    ],
+    why:"Lever is your legal system of record. All hiring decisions and communication must be documented there for compliance.",
+    stats:null,
+    critical:"After export, ALL further work happens in Lever, not LinkedIn Recruiter.",
+    info:null
+  },
+  {
+    num:6,
+    title:"Send Rejections",
+    subtitle:"Close the loop professionally",
+    actions:[
+      "After initial conversation (not a fit) \u2192 reject",
+      "After phone screen (not advancing) \u2192 reject",
+      "After interview (not selected) \u2192 reject",
+      "When role is filled \u2192 reject all active conversations",
+      "Timeline: Within 2 business days of decision",
+      "Pipeline \u2192 Select candidates \u2192 Reject \u2192 Send Message"
+    ],
+    why:"You reached out to them first \u2014 ghosting is unprofessional and damages Xsolla\u2019s brand.",
+    stats:null,
+    critical:null,
+    info:null
+  }
+];
+
+var sel=null;
+
+function render(){
+  var el=document.getElementById('steps');
+  el.innerHTML=DATA.map(function(d,i){
+    var isActive=sel===i;
+
+    var actionsHtml=d.actions.map(function(a){return '<div class="action-item">'+a+'</div>'}).join('');
+
+    var whyHtml='<div class="why-block"><div class="why-label">Why it matters</div><div class="why-text">'+d.why+'</div></div>';
+
+    var statsHtml='';
+    if(d.stats){
+      statsHtml='<div class="stat-row">'+d.stats.map(function(s){
+        return '<div class="stat-card"><div class="stat-label">'+s.label+'</div><div class="stat-value">'+s.value+'</div></div>';
+      }).join('')+'</div>';
+    }
+
+    var criticalHtml='';
+    if(d.critical){
+      criticalHtml='<div class="critical-block"><div class="critical-label">Critical</div><div class="critical-text">'+d.critical+'</div></div>';
+    }
+
+    return '<div class="step'+(isActive?' active':'')+'" data-idx="'+i+'">'+
+      '<div class="step-top">'+
+        '<div class="step-num">'+d.num+'</div>'+
+        '<div class="step-info">'+
+          '<div class="step-title">'+d.title+'</div>'+
+          '<div class="step-subtitle">'+d.subtitle+'</div>'+
+        '</div>'+
+        '<div class="step-arrow">\u203A</div>'+
+      '</div>'+
+      '<div class="step-body">'+
+        '<div class="divider"></div>'+
+        '<div class="section-label">What to do</div>'+
+        actionsHtml+
+        whyHtml+
+        statsHtml+
+        criticalHtml+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  el.querySelectorAll('.step').forEach(function(c){
+    c.addEventListener('click',function(){
+      var idx=parseInt(c.dataset.idx);
+      sel=sel===idx?null:idx;
+      render();
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
