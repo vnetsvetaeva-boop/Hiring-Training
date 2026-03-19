@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:20px}
+.header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
+.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
+.header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
+
+.phases{display:flex;gap:8px;margin-bottom:16px}
+.phase-tab{flex:1;padding:10px 10px;border-radius:10px;text-align:center;cursor:pointer;border:2px solid #ecedea;background:#fff;transition:all .2s}
+.phase-tab:hover{border-color:#b0e8f7}
+.phase-tab.active{border-color:#50D0ED;background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+.phase-tab-week{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:2px}
+.phase-tab.active .phase-tab-week{color:rgba(0,60,80,.5)}
+.phase-tab-name{font-size:15px;font-weight:700;color:#000}
+.phase-tab.active .phase-tab-name{color:#0A3D4F}
+
+.phase-content{display:none}
+.phase-content.visible{display:block}
+
+.checklist{display:flex;flex-direction:column;gap:8px}
+
+.item{border:2px solid #ecedea;border-radius:10px;background:#fff;cursor:pointer;transition:all .25s;overflow:hidden}
+.item:hover{border-color:#b0e8f7;box-shadow:0 2px 8px rgba(128,234,255,.1)}
+.item.active{border-color:#50D0ED;box-shadow:0 3px 16px rgba(128,234,255,.2)}
+
+.item-top{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.item.active .item-top{background:linear-gradient(135deg,rgba(128,234,255,.15) 0%,rgba(80,208,237,.1) 100%)}
+.item-check{width:24px;height:24px;border-radius:6px;background:#f4f4f3;border:2px solid #ecedea;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;color:transparent}
+.item.active .item-check{background:#10B981;border-color:#059669;color:#fff}
+.item-title{font-size:16px;font-weight:700;color:#000;flex:1}
+.item-arrow{font-size:16px;color:#ccc;transition:transform .2s;flex-shrink:0}
+.item.active .item-arrow{transform:rotate(90deg);color:#0A3D4F}
+
+.item-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;padding:0 16px}
+.item.active .item-body{max-height:1500px;padding:0 16px 16px}
+
+.do-item{font-size:15px;color:#333;font-weight:500;line-height:1.5;padding:3px 0 3px 20px;position:relative}
+.do-item::before{content:'\2022';position:absolute;left:4px;color:#50D0ED;font-weight:700}
+
+.dont-item{font-size:15px;color:#333;font-weight:500;line-height:1.5;padding:3px 0 3px 20px;position:relative}
+.dont-item::before{content:'\2717';position:absolute;left:2px;color:#EF4444;font-weight:700;font-size:13px}
+
+.sub-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(0,60,80,.45);margin-top:12px;margin-bottom:6px}
+
+.why-block{background:#f7f7f5;border-left:4px solid #80EAFF;border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px}
+.why-text{font-size:14px;color:#555;font-weight:500;line-height:1.5}
+
+.warn-block{background:#FEF9C3;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px}
+.warn-text{font-size:14px;color:#92400E;font-weight:600;line-height:1.5}
+
+.time-badge{display:inline-block;font-size:12px;font-weight:700;background:#E0F7FF;color:#0E7490;padding:3px 10px;border-radius:5px;margin-top:8px}
+
+.code-block{background:#f7f7f5;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:#555;font-weight:500;line-height:1.6;white-space:pre-line}
+
+@media(max-width:580px){
+  .phases{flex-direction:column;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Agency partnership</div>
+  <div class="header-title">Your Responsibilities at Every Phase</div>
+  <div class="header-sub">Click a phase, then expand each checklist item</div>
+</div>
+
+<div class="phases" id="phases"></div>
+<div id="content"></div>
+
+<script>
+var PHASES=[
+  {
+    name:"Kickoff Call",
+    week:"Week 1",
+    items:[
+      {
+        title:"Come Prepared",
+        dos:[
+          "Refined job description (updated in Lever)",
+          "Must-have vs nice-to-have skills (crystal clear)",
+          "Realistic compensation range (market-competitive, approved by Finance)",
+          "Ideal candidate examples (\u201CSomeone like [Person] at [Company]\u201D)",
+          "Your interview availability for the next 4\u20136 weeks",
+          "What makes this role exciting (to help agency sell the opportunity)"
+        ],
+        donts:null,
+        why:null,
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Be Specific During the Call",
+        dos:[
+          "Clearly articulate must-have requirements",
+          "Explain deal-breakers upfront",
+          "Share what \u201Cgood fit\u201D looks like (give examples)",
+          "Discuss company culture and team dynamics",
+          "Set expectations on submission quality vs quantity"
+        ],
+        donts:[
+          "Give vague requirements (\u201Csomeone smart\u201D)",
+          "Ask for unicorns (unrealistic skill combinations)",
+          "Change requirements mid-search without communicating"
+        ],
+        why:null,
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Agree on Process",
+        dos:[
+          "Submission frequency: How often will agency submit candidates?",
+          "Communication cadence: Weekly check-ins? Email updates?",
+          "Feedback format: How will you communicate why candidates don\u2019t fit?",
+          "Timeline: When do you expect first submissions? Final decision?"
+        ],
+        donts:null,
+        why:null,
+        warn:null,
+        extra:null
+      }
+    ]
+  },
+  {
+    name:"Active Search",
+    week:"Weeks 2\u20134",
+    items:[
+      {
+        title:"Review Submissions Within 48 Hours",
+        dos:[
+          "Provide decision: Yes (interview) / No (pass) / Maybe (need clarification)",
+          "Quick review doesn\u2019t mean sloppy \u2014 just timely",
+          "If unavailable: tell agency in advance, delegate to a team member"
+        ],
+        donts:[
+          "Let candidates sit for a week waiting"
+        ],
+        why:"Candidates are talking to multiple companies. Agencies prioritize responsive clients. Slow response = lost candidates.",
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Provide Detailed Feedback",
+        dos:[
+          "\u201CMissing X skill that\u2019s critical for this role\u201D",
+          "\u201COver-qualified \u2014 looking for VP-level, not IC\u201D",
+          "\u201CSalary expectations exceed our budget\u201D",
+          "\u201CGreat profile, but lacks Y which is a must-have\u201D"
+        ],
+        donts:[
+          "Just say \u201CNot a fit\u201D without explanation"
+        ],
+        why:"Helps agency refine their search and avoid submitting similar profiles. Improves quality of future submissions.",
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Move Quickly on Strong Candidates",
+        dos:[
+          "Within 48 hrs of submission: Confirm interview + provide availability",
+          "Within 3\u20135 days: Conduct interview",
+          "Within 1 week of final interview: Hire / no-hire decision"
+        ],
+        donts:null,
+        why:null,
+        warn:"Agency candidates are actively interviewing. A week\u2019s delay = they accept another offer.",
+        extra:null
+      },
+      {
+        title:"Communicate Changes Immediately",
+        dos:[
+          "Requirements change (new skill becomes must-have)",
+          "Compensation budget shifts",
+          "Timeline accelerates or extends",
+          "Role filled internally (stop the search)",
+          "Headcount pulled (cancel the search)"
+        ],
+        donts:[
+          "Let agency keep working on outdated requirements",
+          "Assume they\u2019ll \u201Cjust know\u201D something changed",
+          "Ghost the agency if priorities shift"
+        ],
+        why:null,
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Keep Your TA Partner in the Loop",
+        dos:[
+          "CC your TA Partner on major decisions (final round, offer stage)",
+          "Flag any issues with agency responsiveness or quality",
+          "Report change in role status"
+        ],
+        donts:[
+          "Work around your TA Partner",
+          "Make side deals with the agency",
+          "Commit to things outside the MSA"
+        ],
+        why:"TA Partner manages the agency relationship, can intervene if issues arise, and tracks agency performance across all Xsolla roles.",
+        warn:null,
+        extra:null
+      }
+    ]
+  },
+  {
+    name:"Interview & Decision",
+    week:"Weeks 4\u20136",
+    items:[
+      {
+        title:"Conduct Thorough Interviews",
+        dos:[
+          "Assess technical depth, culture fit, team dynamics",
+          "Don\u2019t assume agency validated everything \u2014 interview thoroughly"
+        ],
+        donts:null,
+        why:"Agency verified basic qualifications, salary alignment, and interest. Deep technical assessment, culture fit, and final decision are on YOU.",
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Provide Interview Feedback",
+        dos:[
+          "Pass or advance? Tell the agency after each interview",
+          "If pass: Explain why (helps them understand what you need)",
+          "If advance: Share next steps and timeline"
+        ],
+        donts:null,
+        why:"Helps agency keep the candidate informed, manage expectations, and support your close if candidate is strong.",
+        warn:null,
+        extra:null
+      },
+      {
+        title:"Make Timely Decisions",
+        dos:[
+          "Gather team feedback within 48 hours",
+          "Make hire/no-hire decision within 1 week",
+          "Communicate decision to agency immediately"
+        ],
+        donts:null,
+        why:null,
+        warn:"If making an offer: work with agency to gauge interest, leverage their relationship, move quickly. If passing: tell agency why, confirm if search continues or pauses.",
+        extra:null
+      }
+    ]
+  }
+];
+
+var selPhase=0;
+var selItem=null;
+
+function render(){
+  var pEl=document.getElementById('phases');
+  pEl.innerHTML=PHASES.map(function(p,i){
+    return '<div class="phase-tab'+(i===selPhase?' active':'')+'" data-phase="'+i+'">'+
+      '<div class="phase-tab-week">'+p.week+'</div>'+
+      '<div class="phase-tab-name">'+p.name+'</div>'+
+    '</div>';
+  }).join('');
+
+  pEl.querySelectorAll('.phase-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      selPhase=parseInt(t.dataset.phase);
+      selItem=null;
+      render();
+    });
+  });
+
+  var cEl=document.getElementById('content');
+  var phase=PHASES[selPhase];
+
+  cEl.innerHTML='<div class="checklist">'+phase.items.map(function(it,i){
+    var isActive=selItem===i;
+
+    var dosHtml=it.dos?it.dos.map(function(d){return '<div class="do-item">'+d+'</div>'}).join(''):'';
+
+    var dontsHtml='';
+    if(it.donts){
+      dontsHtml='<div class="sub-label">Don\u2019t</div>'+it.donts.map(function(d){return '<div class="dont-item">'+d+'</div>'}).join('');
+    }
+
+    var whyHtml=it.why?'<div class="why-block"><div class="why-text">'+it.why+'</div></div>':'';
+    var warnHtml=it.warn?'<div class="warn-block"><div class="warn-text">'+it.warn+'</div></div>':'';
+    var extraHtml=it.extra?'<div class="sub-label">Feedback template</div><div class="code-block">'+it.extra+'</div>':'';
+
+    return '<div class="item'+(isActive?' active':'')+'" data-idx="'+i+'">'+
+      '<div class="item-top">'+
+        '<div class="item-check">\u2713</div>'+
+        '<div class="item-title">'+it.title+'</div>'+
+        '<div class="item-arrow">\u203A</div>'+
+      '</div>'+
+      '<div class="item-body">'+
+        '<div class="sub-label">Do</div>'+
+        dosHtml+
+        dontsHtml+
+        whyHtml+
+        warnHtml+
+        extraHtml+
+      '</div>'+
+    '</div>';
+  }).join('')+'</div>';
+
+  cEl.querySelectorAll('.item').forEach(function(c){
+    c.addEventListener('click',function(){
+      var idx=parseInt(c.dataset.idx);
+      selItem=selItem===idx?null:idx;
+      render();
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
