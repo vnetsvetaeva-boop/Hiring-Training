@@ -22,6 +22,9 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 .col-top{padding:16px 16px 14px;text-align:center;transition:background .2s}
 .col.active .col-top{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
 
+.col-num{width:36px;height:36px;border-radius:50%;background:#7C3AED;color:#fff;font-size:18px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+.col.active .col-num{background:#6D28D9;box-shadow:0 2px 8px rgba(124,58,237,.3)}
+
 .col-icon{font-size:36px;margin-bottom:6px;display:block}
 .col-name{font-size:18px;font-weight:700;color:#000;line-height:1.3}
 .col.active .col-name{color:#0A3D4F}
@@ -36,7 +39,7 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 .section-label:first-child{margin-top:0}
 
 .how-item{font-size:15px;color:#333;font-weight:500;line-height:1.5;padding:4px 0 4px 20px;position:relative}
-.how-item::before{content:'→';position:absolute;left:0;color:#50D0ED;font-weight:700}
+.how-item::before{content:'→';position:absolute;left:0;color:#7C3AED;font-weight:700}
 
 .best-item{font-size:14px;color:#333;font-weight:500;line-height:1.5;padding:3px 0 3px 20px;position:relative}
 .best-item::before{content:'✓';position:absolute;left:0;color:#10B981;font-weight:700}
@@ -46,8 +49,8 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 .metric-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:2px}
 .metric-value{font-size:14px;font-weight:700;color:#0A3D4F}
 
-.scenario{margin-top:14px;background:#f7f7f5;border-left:4px solid #80EAFF;border-radius:0 8px 8px 0;padding:12px 14px}
-.scenario-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(0,60,80,.45);margin-bottom:4px}
+.scenario{margin-top:14px;background:#f7f7f5;border-left:4px solid #7C3AED;border-radius:0 8px 8px 0;padding:12px 14px}
+.scenario-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(124,58,237,.55);margin-bottom:4px}
 .scenario-text{font-size:14px;color:#555;font-weight:500;line-height:1.5}
 
 .bottom{background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:16px 20px;text-align:center}
@@ -141,8 +144,10 @@ function render(){
   var el=document.getElementById('columns');
   el.innerHTML=DATA.map(function(d){
     var isActive=sel===d.id;
+    var num=d.id+1;
     return '<div class="col'+(isActive?' active':'')+'" data-id="'+d.id+'">'+
       '<div class="col-top">'+
+        '<div class="col-num">'+num+'</div>'+
         '<span class="col-icon">'+d.icon+'</span>'+
         '<div class="col-name">'+d.name+'</div>'+
         '<div class="col-hint">Click to explore →</div>'+
