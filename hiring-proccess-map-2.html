@@ -7,32 +7,32 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
- 
+
 .header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:24px}
 .header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
 .header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
 .header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
- 
+
 .steps{display:flex;gap:0;margin-bottom:24px;padding:0 4px}
 .step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;cursor:pointer;padding:10px 2px 12px;border-radius:10px;transition:background .15s}
 .step:hover{background:rgba(0,0,0,.02)}
 .step.active:hover{background:rgba(128,234,255,.08)}
- 
+
 .step:not(:last-child)::after{content:'';position:absolute;top:28px;left:calc(50% + 22px);width:calc(100% - 44px);height:2.5px;background:#ecedea;z-index:0}
 .step.done:not(:last-child)::after{background:#80EAFF}
- 
+
 .step-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;position:relative;z-index:1;transition:all .2s}
 .step-circle.off{background:#f4f4f3;color:#aaa;border:2px solid #ecedea}
 .step-circle.on{background:#80EAFF;color:#0A3D4F;border:2.5px solid #50D0ED}
 .step-circle.sel{box-shadow:0 0 0 5px rgba(128,234,255,.35);transform:scale(1.12)}
 .step-circle.done-check{background:#10B981;color:#fff;border:2.5px solid #059669}
- 
+
 .step-label{font-size:14px;font-weight:600;color:#999;text-align:center;margin-top:8px;line-height:1.3}
 .step.active .step-label{color:#000;font-weight:700}
- 
+
 .you-here{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#0E7490;background:#E0F7FF;padding:3px 8px;border-radius:4px;margin-top:5px;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
- 
+
 .detail{background:#f7f7f5;border-left:4px solid #80EAFF;padding:22px 26px;border-radius:0 10px 10px 0;margin-bottom:16px;transition:all .2s}
 .detail.done-detail{border-left-color:#10B981}
 .detail.future-detail{border-left-color:#ecedea}
@@ -42,11 +42,11 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 .detail-num.future-num{background:#f4f4f3;color:#aaa}
 .detail-title{font-size:22px;font-weight:700;color:#000}
 .detail-text{font-size:18px;font-weight:500;color:#333;line-height:1.6}
- 
+
 .detail-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 14px;background:#E0F7FF;color:#0E7490;font-size:14px;font-weight:600;border-radius:8px;text-decoration:none;transition:background .15s}
 .detail-link:hover{background:#b8efff}
 .detail-link svg{flex-shrink:0}
- 
+
 .status-badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;padding:4px 10px;border-radius:5px;margin-left:auto}
 .badge-done{background:#ECFDF5;color:#065F46}
 .badge-current{background:#E0F7FF;color:#0E7490}
@@ -54,16 +54,16 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 </style>
 </head>
 <body>
- 
+
 <div class="header">
   <div class="header-eyebrow">Hiring process</div>
   <div class="header-title">From Open Role to First Day</div>
   <div class="header-sub">Click any step to see details &mdash; you&rsquo;re currently on Step 1</div>
 </div>
- 
+
 <div class="steps" id="steps"></div>
 <div id="detail"></div>
- 
+
 <script>
 var STEPS=[
   {num:1,short:"Role Setup",status:"current",
@@ -87,44 +87,44 @@ var STEPS=[
    title:"Onboarding Begins",
    text:"HR uploads the signed contract to HiBob, IT sets up equipment, and you coordinate first-day logistics with the onboarding team. Your new hire is on the way!"}
 ];
- 
+
 var sel=0;
- 
+
 function render(){
   var stepsEl=document.getElementById('steps');
   var detailEl=document.getElementById('detail');
- 
+
   stepsEl.innerHTML=STEPS.map(function(s,i){
     var isDone=s.status==='done';
     var isCurrent=s.status==='current';
     var isActive=isDone||isCurrent;
- 
+
     var circCls=isDone?'step-circle done-check':isActive?'step-circle on':'step-circle off';
     if(i===sel)circCls+=' sel';
     var stepCls='step'+(isActive?' active':'')+(isDone?' done':'');
- 
+
     var circContent=isDone?'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10.5L8.5 14L15 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>':''+s.num;
- 
+
     var youHere=isCurrent?'<div class="you-here">You are here</div>':'';
- 
+
     return '<div class="'+stepCls+'" data-idx="'+i+'">'+
       '<div class="'+circCls+'">'+circContent+'</div>'+
       '<div class="step-label">'+s.short+'</div>'+
       youHere+
     '</div>';
   }).join('');
- 
+
   var s=STEPS[sel];
   var isDone=s.status==='done';
   var isCurrent=s.status==='current';
- 
+
   var detailCls=isDone?'detail done-detail':isCurrent?'detail':'detail future-detail';
   var numCls=isDone?'detail-num done-num':isCurrent?'detail-num':'detail-num future-num';
   var badgeCls=isDone?'status-badge badge-done':isCurrent?'status-badge badge-current':'status-badge badge-upcoming';
   var badgeText=isDone?'Completed':isCurrent?'In progress':'Upcoming';
- 
+
   var numContent=isDone?'<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 10.5L8.5 14L15 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>':''+s.num;
- 
+
   var linkHtml='';
   if(s.link){
     var icon=s.link.icon==='video'
@@ -132,7 +132,7 @@ function render(){
       :'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6.5 3.5h-2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1v-2" stroke="#0E7490" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 2.5h4v4" stroke="#0E7490" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 2.5L8 8" stroke="#0E7490" stroke-width="1.3" stroke-linecap="round"/></svg>';
     linkHtml='<div style="margin-top:12px"><span class="detail-link">'+icon+' '+s.link.label+'</span></div>';
   }
- 
+
   detailEl.innerHTML=
     '<div class="'+detailCls+'">'+
       '<div class="detail-header">'+
@@ -142,7 +142,7 @@ function render(){
       '</div>'+
       '<div class="detail-text">'+s.text+linkHtml+'</div>'+
     '</div>';
- 
+
   stepsEl.querySelectorAll('.step').forEach(function(el){
     el.addEventListener('click',function(){
       sel=parseInt(el.dataset.idx);
@@ -150,7 +150,7 @@ function render(){
     });
   });
 }
- 
+
 render();
 </script>
 </body>
