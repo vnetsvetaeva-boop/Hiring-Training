@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:18px 22px 14px;margin-bottom:20px}
+.header-eyebrow{font-size:.7rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px}
+.header-title{font-size:22px;font-weight:700;color:#0A3D4F;line-height:1.2}
+.header-sub{font-size:14px;color:rgba(0,60,80,.55);margin-top:4px}
+
+.tabs{display:flex;gap:6px;margin-bottom:16px}
+.tab{flex:1;padding:10px 8px;border-radius:8px;text-align:center;cursor:pointer;transition:all .15s;border:2px solid #ecedea;background:#fff}
+.tab:hover{border-color:#b8efff}
+.tab.active{border-color:#50D0ED;background:rgba(128,234,255,.08)}
+.tab-name{font-size:14px;font-weight:700;color:#999;display:block}
+.tab.active .tab-name{color:#0A3D4F}
+.tab-icon{font-size:20px;margin-bottom:2px;display:block}
+
+.table-wrap{border:1px solid #ecedea;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:#f7f7f5;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#999;padding:10px 12px;text-align:left;border-bottom:1px solid #ecedea}
+th:first-child{width:45%}
+th:not(:first-child){text-align:center;width:18.3%}
+td{padding:10px 12px;font-size:14px;font-weight:500;color:#333;border-bottom:1px solid #f4f4f3;vertical-align:middle}
+td:not(:first-child){text-align:center}
+tr:last-child td{border-bottom:none}
+tr:hover{background:rgba(128,234,255,.04)}
+
+.td-label{font-weight:600;color:#000;font-size:13px}
+
+.yes{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#ECFDF5;color:#059669;font-weight:700;font-size:14px}
+.no{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#FEF2F2;color:#DC2626;font-weight:700;font-size:14px}
+.note{font-size:12px;color:#666;line-height:1.4;max-width:160px;display:inline-block}
+
+.highlight-col td:nth-child(2),.highlight-col th:nth-child(2){background:rgba(128,234,255,.07)}
+.highlight-col-2 td:nth-child(3),.highlight-col-2 th:nth-child(3){background:rgba(128,234,255,.07)}
+.highlight-col-3 td:nth-child(4),.highlight-col-3 th:nth-child(4){background:rgba(128,234,255,.07)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Compliance essentials</div>
+  <div class="header-title">How You Interact with Each Worker Type</div>
+  <div class="header-sub">Click a worker type to highlight its column</div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" data-col="1"><span class="tab-icon">&#128188;</span><span class="tab-name">Full-Time Employee</span></div>
+  <div class="tab" data-col="2"><span class="tab-icon">&#128221;</span><span class="tab-name">Consultant Staff</span></div>
+  <div class="tab" data-col="3"><span class="tab-icon">&#127760;</span><span class="tab-name">EOR Worker</span></div>
+</div>
+
+<div class="table-wrap">
+<table id="mainTable" class="highlight-col">
+<thead>
+  <tr>
+    <th>Action</th>
+    <th>Full-Time</th>
+    <th>Consultant</th>
+    <th>EOR</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="td-label">Set schedules and hours</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="no">&#10005;</span></td>
+    <td><span class="note">No &mdash; set goals &amp; expectations only</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Direct supervision of daily work</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="no">&#10005;</span></td>
+    <td><span class="note">Yes &mdash; work direction only</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Define scope, deliverables, deadlines</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="yes">&#10003;</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Provide benefits</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="no">&#10005;</span></td>
+    <td><span class="note">No &mdash; EOR handles</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Performance reviews</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="no">&#10005;</span></td>
+    <td><span class="yes">&#10003;</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Internal trainings &amp; events</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="no">&#10005;</span></td>
+    <td><span class="note">Yes &mdash; team meetings</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Provide equipment</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="note">Only if required + exec approval</span></td>
+    <td><span class="note">Coordinate with EOR</span></td>
+  </tr>
+  <tr>
+    <td class="td-label">Hiring / termination decisions</td>
+    <td><span class="yes">&#10003;</span></td>
+    <td><span class="note">Terminate per contract terms</span></td>
+    <td><span class="note">Work with EOR</span></td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<script>
+var tabs=document.querySelectorAll('.tab');
+var table=document.getElementById('mainTable');
+
+tabs.forEach(function(tab){
+  tab.addEventListener('click',function(){
+    tabs.forEach(function(t){t.classList.remove('active')});
+    tab.classList.add('active');
+    var col=tab.dataset.col;
+    table.className='';
+    if(col==='1')table.className='highlight-col';
+    if(col==='2')table.className='highlight-col-2';
+    if(col==='3')table.className='highlight-col-3';
+  });
+});
+</script>
+</body>
+</html>
