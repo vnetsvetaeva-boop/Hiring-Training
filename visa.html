@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:16px 20px 12px;margin-bottom:14px}
+.header-eyebrow{font-size:.65rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:2px}
+.header-title{font-size:22px;font-weight:700;color:#0A3D4F;line-height:1.2}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+
+.card{border-radius:8px;border:1.5px solid #ecedea;overflow:hidden;transition:border-color .2s}
+.card.open{border-color:#80EAFF;grid-column:1/-1}
+
+.card-head{display:flex;align-items:center;gap:7px;padding:8px 10px;cursor:pointer;user-select:none;transition:background .12s}
+.card-head:hover{background:#f7f7f5}
+.card.open .card-head{background:#f7f7f5;border-bottom:1px solid #ecedea}
+
+.flag{font-size:16px;flex-shrink:0}
+.cname{font-size:13px;font-weight:700;color:#000;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.chev{width:14px;height:14px;flex-shrink:0;transition:transform .25s;color:#bbb}
+.card.open .chev{transform:rotate(180deg);color:#0E7490}
+
+.card-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.card.open .card-body{max-height:600px}
+
+.card-inner{padding:10px 12px 10px 12px;display:flex;flex-direction:column;gap:8px}
+
+.field{display:flex;gap:8px}
+.field-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:#999;min-width:80px;padding-top:2px;flex-shrink:0}
+.field-value{font-size:12.5px;font-weight:500;color:#333;line-height:1.45}
+
+.divider{height:1px;background:#ecedea;margin:2px 0}
+
+.crit-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:rgba(0,60,80,.5);margin-bottom:3px}
+.crit-item{font-size:12px;font-weight:500;color:#444;line-height:1.45;margin-bottom:2px;padding-left:10px;position:relative}
+.crit-item::before{content:'';position:absolute;left:0;top:5.5px;width:4px;height:4px;border-radius:50%;background:#80EAFF}
+.crit-item:last-child{margin-bottom:0}
+
+.warn{font-size:11px;font-weight:600;color:#92400E;background:#FFF7ED;border-radius:4px;padding:5px 8px;line-height:1.4}
+.warn::before{content:'⚠ '}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Immigration reference</div>
+  <div class="header-title">What We Sponsor by Country</div>
+</div>
+
+<div class="grid" id="g"></div>
+
+<script>
+var D=[
+  {f:"🇺🇸",n:"USA",
+   visa:"H-1B (renewals only), L-1, O-1, F-1 OPT/CPT, PERM / Green Card",
+   time:"Standard visas: 3–6 months. PERM: 12–24 months",
+   start:"HR Service Desk Ticket → HR review → Wolfsdorf (immigration counsel)",
+   c:["H-1B — Renewals only. No new lottery sponsorship.",
+      "L-1 — Requires 1 year full-time with a related foreign entity. Year-round filing.",
+      "O-1 — Must demonstrate extraordinary ability. Year-round filing."],
+   w:"A new hire cannot start until visa status has been transferred to Xsolla via USCIS."},
+
+  {f:"🇨🇦",n:"Canada",
+   visa:"Intra-Company Transferee (ICT)",
+   time:"Application + docs ~3 weeks → Wolfsdorf filing → Government 2–16+ weeks",
+   start:"HR Service Desk Ticket → HR review → Wolfsdorf",
+   c:["Executive, senior manager, or specialized knowledge role.",
+      "1 year full-time with a related entity in the last 3 years."]},
+
+  {f:"🇩🇪",n:"Germany",
+   visa:"EU Blue Card",
+   time:"Weeks to months (consulate + local authority dependent)",
+   start:"HR Service Desk Ticket → HR review",
+   c:["University degree in a qualifying occupation.",
+      "Salary must meet the Blue Card threshold.",
+      "Degree recognition required."]},
+
+  {f:"🇯🇵",n:"Japan",
+   visa:"Working Visa — Engineer / Specialist in Humanities / International Services (via COE)",
+   time:"Weeks to months (COE processing + consular visa)",
+   start:"HR Service Desk Ticket → HR review",
+   c:["Passport valid ≥6 months, plus a degree or qualifying work experience.",
+      "Japanese language proficiency is critical for BD, CSM, and IM roles.",
+      "COE is strongly recommended for smooth processing."]},
+
+  {f:"🇲🇾",n:"Malaysia",
+   visa:"Employment Pass (EP)",
+   time:"Weeks to months",
+   start:"HR Service Desk Ticket → HR review",
+   c:["Passport validity ≥30 months (formal minimum ≥14 months from entry).",
+      "Degree must be notarized, translated to English, and certified as True Copy by the Malaysian Embassy.",
+      "Employee must remain outside Malaysia during EP application processing."]},
+
+  {f:"🇰🇷",n:"Korea",
+   visa:"E-7 Visa — Professional Work",
+   time:"Weeks to months",
+   start:"HR Service Desk Ticket → HR review",
+   c:["Bachelor's degree or higher (relevant work experience may substitute).",
+      "Criminal record / good conduct certificate required.",
+      "Korean language proficiency essential — if not proficient, consult APAC Civilization Leader (SVP of APAC) first."]},
+
+  {f:"🇨🇳",n:"China",
+   visa:"Class A (High-End Talent) / Class B (Professionals — credit-based)",
+   time:"Weeks to months",
+   start:"HR Service Desk Ticket → HR review → FESCO (immigration vendor)",
+   c:["Class A — National talent plan, international achievements, or salary ≥6× local average (~RMB 570,000+/yr).",
+      "Class B — Bachelor's degree + 2 years' relevant experience, OR pre-tax salary ≥RMB 380,000/yr.",
+      "Scoring option: 60+ points may qualify without a Bachelor's.",
+      "Degree and non-criminal record must be apostilled."]},
+
+  {f:"🇷🇺",n:"Russia — Non-EAEU",
+   visa:"Work permit required",
+   time:"Case-by-case",
+   start:"HR Service Desk Ticket → HR review",
+   c:["Work permit required — assessed on a case-by-case basis."]}
+];
+
+function build(){
+  var h='';
+  D.forEach(function(c,i){
+    h+='<div class="card" id="c'+i+'">';
+    h+='<div class="card-head" onclick="tog('+i+')">';
+    h+='<span class="flag">'+c.f+'</span>';
+    h+='<span class="cname">'+c.n+'</span>';
+    h+='<svg class="chev" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 5 7 9 11 5"/></svg>';
+    h+='</div><div class="card-body"><div class="card-inner">';
+
+    h+='<div class="field"><div class="field-label">Visa routes</div><div class="field-value">'+c.visa+'</div></div>';
+    h+='<div class="field"><div class="field-label">Lead time</div><div class="field-value">'+c.time+'</div></div>';
+    h+='<div class="field"><div class="field-label">How to start</div><div class="field-value">'+c.start+'</div></div>';
+
+    h+='<div class="divider"></div>';
+
+    h+='<div><div class="crit-title">Key criteria</div>';
+    c.c.forEach(function(x){h+='<div class="crit-item">'+x+'</div>'});
+    h+='</div>';
+
+    if(c.w) h+='<div class="warn">'+c.w+'</div>';
+
+    h+='</div></div></div>';
+  });
+  document.getElementById('g').innerHTML=h;
+}
+
+function tog(i){
+  var el=document.getElementById('c'+i);
+  if(el.classList.contains('open')){el.classList.remove('open');return}
+  document.querySelectorAll('.card.open').forEach(function(e){e.classList.remove('open')});
+  el.classList.add('open');
+}
+
+build();
+</script>
+</body>
+</html>
