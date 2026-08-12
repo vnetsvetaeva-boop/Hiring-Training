@@ -7,178 +7,134 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+.wrap{max-width:760px;margin:0 auto}
 
-.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:22px 26px 18px;margin-bottom:24px}
-.header-eyebrow{font-size:.75rem;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px}
-.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
-.header-sub{font-size:16px;color:rgba(0,60,80,.55);margin-top:6px}
+.header{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%);border-radius:12px;padding:18px 24px;margin-bottom:16px}
+.header-eyebrow{font-size:11px;font-weight:600;color:rgba(0,60,80,.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:2px}
+.header-title{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.15}
+.header-sub{font-size:14px;color:rgba(0,60,80,.55);font-weight:500;margin-top:4px}
 
-.columns{display:flex;gap:12px;margin-bottom:20px}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{border:2px solid #ecedea;border-radius:10px;background:#fff;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.row:hover{border-color:#b0e8f7}
+.row.active{border-color:#50D0ED;box-shadow:0 4px 18px rgba(128,234,255,.22)}
 
-.col{flex:1;border-radius:10px;border:2px solid #ecedea;background:#fff;cursor:pointer;transition:all .25s ease;overflow:hidden}
-.col:hover{border-color:#b0e8f7;box-shadow:0 2px 12px rgba(128,234,255,.15)}
-.col.active{border-color:#50D0ED;box-shadow:0 4px 20px rgba(128,234,255,.25)}
+.row-head{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;transition:background .2s}
+.row.active .row-head{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+.row-num{flex:none;width:32px;height:32px;border-radius:50%;background:#0A3D4F;color:#80EAFF;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.row.active .row-num{background:#0A3D4F;color:#80EAFF}
+.row-icon{flex:none;font-size:26px;line-height:1}
+.row-text{flex:1;min-width:0}
+.row-name{font-size:18px;font-weight:700;color:#000;line-height:1.25}
+.row.active .row-name{color:#0A3D4F}
+.row-meta{font-size:12px;font-weight:600;color:#999;margin-top:1px}
+.row.active .row-meta{color:rgba(0,60,80,.55)}
+.chev{flex:none;font-size:16px;color:#999;transition:transform .3s}
+.row.active .chev{transform:rotate(180deg);color:#0A3D4F}
 
-.col-top{padding:16px 16px 14px;text-align:center;transition:background .2s}
-.col.active .col-top{background:linear-gradient(135deg,#80EAFF 0%,#50D0ED 100%)}
+.row-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 16px}
+.row.active .row-body{max-height:340px;padding:12px 16px 14px}
 
-.col-num{width:36px;height:36px;border-radius:50%;background:#7C3AED;color:#fff;font-size:18px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
-.col.active .col-num{background:#6D28D9;box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:#aaa;margin-bottom:5px}
+.how{font-size:15px;font-weight:500;color:#333;line-height:1.45;padding:1px 0 1px 18px;position:relative}
+.how::before{content:'→';position:absolute;left:0;color:#50D0ED;font-weight:700}
 
-.col-icon{font-size:36px;margin-bottom:6px;display:block}
-.col-name{font-size:18px;font-weight:700;color:#000;line-height:1.3}
-.col.active .col-name{color:#0A3D4F}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;font-weight:600;color:#0A3D4F;background:#f4f4f3;border:1px solid #ecedea;border-radius:20px;padding:3px 10px}
+.chip::before{content:'✓ ';color:#10B981}
 
-.col-hint{font-size:12px;color:#999;margin-top:6px;transition:opacity .2s}
-.col.active .col-hint{opacity:0;height:0;margin:0;overflow:hidden}
+.scenario{margin-top:12px;background:#f7f7f5;border-left:4px solid #80EAFF;border-radius:0 8px 8px 0;padding:10px 14px}
+.scenario .label{margin-bottom:2px}
+.scenario-text{font-size:14px;font-weight:500;color:#555;line-height:1.45}
 
-.col-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;padding:0 16px}
-.col.active .col-body{max-height:900px;padding:0 16px 18px}
-
-.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:rgba(0,60,80,.45);margin-bottom:6px;margin-top:14px}
-.section-label:first-child{margin-top:0}
-
-.how-item{font-size:15px;color:#333;font-weight:500;line-height:1.5;padding:4px 0 4px 20px;position:relative}
-.how-item::before{content:'→';position:absolute;left:0;color:#7C3AED;font-weight:700}
-
-.best-item{font-size:14px;color:#333;font-weight:500;line-height:1.5;padding:3px 0 3px 20px;position:relative}
-.best-item::before{content:'✓';position:absolute;left:0;color:#10B981;font-weight:700}
-
-.metrics{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.metric{flex:1;min-width:0;background:#f7f7f5;border-radius:8px;padding:10px 10px;text-align:center}
-.metric-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:2px}
-.metric-value{font-size:14px;font-weight:700;color:#0A3D4F}
-
-.scenario{margin-top:14px;background:#f7f7f5;border-left:4px solid #7C3AED;border-radius:0 8px 8px 0;padding:12px 14px}
-.scenario-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(124,58,237,.55);margin-bottom:4px}
-.scenario-text{font-size:14px;color:#555;font-weight:500;line-height:1.5}
-
-.bottom{background:#f7f7f5;border:1px solid #ecedea;border-radius:10px;padding:16px 20px;text-align:center}
-.bottom-main{font-size:16px;font-weight:700;color:#000;margin-bottom:6px}
-.bottom-example{font-size:14px;color:#555;font-weight:500;line-height:1.5}
-.bottom-example strong{color:#0A3D4F;font-weight:600}
-
-@media(max-width:680px){
-  .columns{flex-direction:column}
-  .col.active .col-body{max-height:1200px}
-  .metrics{flex-direction:column}
-  .metric{min-width:100%}
+@media(max-width:520px){
+  body{padding:16px 16px}
+  .row-icon{display:none}
+  .row.active .row-body{max-height:460px}
 }
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-eyebrow">Three sourcing approaches</div>
-  <div class="header-title">Your Sourcing Toolkit</div>
-  <div class="header-sub">Click each approach to explore how it works, when to use it, and a real scenario</div>
+<div class="wrap">
+  <div class="header">
+    <div class="header-eyebrow">Three sourcing approaches</div>
+    <div class="header-title">Your Sourcing Toolkit</div>
+    <div class="header-sub">Tap an approach to see how it works and when to use it</div>
+  </div>
+  <div class="rows" id="rows"></div>
 </div>
-
-<div class="columns" id="columns"></div>
-
 <script>
 var DATA=[
   {
-    id:0,
     icon:"📢",
     name:"Post & Wait",
+    meta:"Low effort · 4–8 weeks · No extra cost",
     how:[
-      "Post job on LinkedIn, job boards, careers page",
+      "Post on LinkedIn, job boards, careers page",
       "Review incoming applications in Lever",
-      "Wait for candidates to come to you"
+      "Candidates come to you"
     ],
-    best:[
-      "Roles with active applicant market",
-      "Junior to mid-level positions",
-      "Common skill sets",
-      "When you have time (60+ days)"
-    ],
-    effort:"Low — 1-2 hrs/week",
-    timeline:"4–8 weeks",
-    scenario:"You're hiring a Marketing Coordinator. The role is straightforward, applicants are plentiful — post it and let Lever collect résumés while you focus on other work."
+    best:["Active applicant market","Junior–mid level","Common skill sets","60+ days to fill"],
+    scenario:"Hiring a Marketing Coordinator — applicants are plentiful. Post it and let Lever collect résumés while you focus elsewhere."
   },
   {
-    id:1,
     icon:"🔍",
     name:"Proactive Sourcing",
+    meta:"High effort · 3–6 weeks · No extra cost",
     how:[
-      "Use LinkedIn Recruiter to search profiles",
+      "Search profiles in LinkedIn Recruiter",
       "Reach out to passive candidates directly",
-      "Build relationships with potential hires"
+      "Build the relationship over time"
     ],
-    best:[
-      "Niche or specialized skills",
-      "Senior level positions",
-      "Passive candidates not actively looking",
-      "Competitive talent markets"
-    ],
-    effort:"High — 3-5 hrs/week",
-    timeline:"3–6 weeks",
-    scenario:"You need a Senior DevOps Engineer with Kubernetes expertise. Few people are actively job-hunting — you'll need to find them on LinkedIn and pitch the opportunity directly."
+    best:["Niche skills","Senior roles","Passive candidates","Competitive markets"],
+    scenario:"Need a Senior DevOps Engineer with Kubernetes expertise. Few are job-hunting — find them yourself and pitch the role directly."
   },
   {
-    id:2,
     icon:"🤝",
     name:"Agency Support",
+    meta:"Low effort · 3–5 weeks · 20–30% of salary (your budget)",
     how:[
-      "External recruiters source candidates for you",
-      "Pre-screened candidates submitted to review",
-      "You interview and make the final decision"
+      "External recruiters source for you",
+      "You get a pre-screened shortlist",
+      "You interview and make the final call"
     ],
-    best:[
-      "Urgent needs (< 30 days)",
-      "Highly specialized or executive roles",
-      "Geographic challenges",
-      "When you lack bandwidth"
-    ],
-    effort:"Low — 1-2 hrs/week reviewing",
-    cost:"~20-30% of first-year salary (YOUR dept budget)",
-    timeline:"3–5 weeks",
-    scenario:"Your VP of Sales resigned unexpectedly. The role must be filled in 30 days. An agency brings you a shortlist of vetted executives while you keep operations running."
+    best:["Urgent: under 30 days","Executive roles","Hard geographies","No bandwidth"],
+    scenario:"Your VP of Sales resigned and the role must be filled in 30 days. An agency delivers vetted executives while you keep operations running."
   }
 ];
-
-var sel=null;
-
+var sel=0;
 function render(){
-  var el=document.getElementById('columns');
-  el.innerHTML=DATA.map(function(d){
-    var isActive=sel===d.id;
-    var num=d.id+1;
-    return '<div class="col'+(isActive?' active':'')+'" data-id="'+d.id+'">'+
-      '<div class="col-top">'+
-        '<div class="col-num">'+num+'</div>'+
-        '<span class="col-icon">'+d.icon+'</span>'+
-        '<div class="col-name">'+d.name+'</div>'+
-        '<div class="col-hint">Click to explore →</div>'+
-      '</div>'+
-      '<div class="col-body">'+
-        '<div class="section-label">How it works</div>'+
-        d.how.map(function(h){return '<div class="how-item">'+h+'</div>'}).join('')+
-        '<div class="section-label">Best for</div>'+
-        d.best.map(function(b){return '<div class="best-item">'+b+'</div>'}).join('')+
-        '<div class="metrics">'+
-          '<div class="metric"><div class="metric-label">Effort</div><div class="metric-value">'+d.effort+'</div></div>'+
-          (d.cost?'<div class="metric"><div class="metric-label">Cost</div><div class="metric-value">'+d.cost+'</div></div>':'')+
-          '<div class="metric"><div class="metric-label">Timeline</div><div class="metric-value">'+d.timeline+'</div></div>'+
+  var el=document.getElementById('rows');
+  el.innerHTML=DATA.map(function(d,i){
+    return '<div class="row'+(sel===i?' active':'')+'" data-i="'+i+'">'+
+      '<div class="row-head">'+
+        '<div class="row-num">'+(i+1)+'</div>'+
+        '<div class="row-icon">'+d.icon+'</div>'+
+        '<div class="row-text">'+
+          '<div class="row-name">'+d.name+'</div>'+
+          '<div class="row-meta">'+d.meta+'</div>'+
         '</div>'+
+        '<div class="chev">▾</div>'+
+      '</div>'+
+      '<div class="row-body">'+
+        '<div class="label">How it works</div>'+
+        d.how.map(function(h){return '<div class="how">'+h+'</div>'}).join('')+
+        '<div class="chips">'+d.best.map(function(b){return '<span class="chip">'+b+'</span>'}).join('')+'</div>'+
         '<div class="scenario">'+
-          '<div class="scenario-label">Example scenario</div>'+
+          '<div class="label">Example</div>'+
           '<div class="scenario-text">'+d.scenario+'</div>'+
         '</div>'+
       '</div>'+
     '</div>';
   }).join('');
-
-  el.querySelectorAll('.col').forEach(function(c){
-    c.addEventListener('click',function(){
-      var id=parseInt(c.dataset.id);
-      sel=sel===id?null:id;
+  el.querySelectorAll('.row').forEach(function(r){
+    r.querySelector('.row-head').addEventListener('click',function(){
+      var i=parseInt(r.dataset.i);
+      sel=sel===i?-1:i;
       render();
     });
   });
 }
-
 render();
 </script>
 </body>
