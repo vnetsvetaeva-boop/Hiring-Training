@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20px 28px;line-height:1.5;max-width:100%;margin:0 auto}
+
+.header{background:linear-gradient(135deg,#80EAFF,#50D0ED);border-radius:12px;padding:18px 22px;margin-bottom:18px}
+.header h1{font-size:28px;font-weight:700;color:#0A3D4F;line-height:1.2}
+
+.table-wrap{border:1px solid #ecedea;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{padding:9px 4px;text-align:center;font-size:15px;font-weight:500;border-bottom:1px solid #ecedea}
+thead th{background:#f7f7f5;font-size:10px;text-transform:uppercase;letter-spacing:.4px;font-weight:700;color:#555;line-height:1.25;padding:8px 3px}
+col.c-type{width:38%}
+col.c-country{width:10.33%}
+th.type,td.type{text-align:left;font-weight:600;padding-left:12px}
+tbody tr:last-child td{border-bottom:none}
+
+.row-main{cursor:pointer;transition:background .15s}
+.row-main:hover{background:#fbfbfa}
+.row-main.open{background:#f4fcff}
+.type-cell{display:flex;align-items:center;gap:7px;font-size:15px;line-height:1.25}
+.chev{width:16px;height:16px;flex:0 0 16px;border-radius:50%;background:#80EAFF;color:#0A3D4F;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.row-main.open .chev{transform:rotate(90deg)}
+.yes{color:#059669;font-weight:700}
+.no{color:#d1d5db;font-weight:700}
+.note{display:block;font-size:9px;color:#888;font-weight:600;line-height:1.2}
+
+.detail{display:none}
+.detail.show{display:table-row}
+.detail td{padding:0;text-align:left;background:#f7f7f5}
+.detail-inner{border-left:4px solid #80EAFF;border-radius:0 10px 10px 0;padding:10px 14px;font-size:15px;font-weight:500;line-height:1.4}
+
+.legend{display:flex;gap:16px;margin-top:12px;font-size:13px;color:#999;font-weight:500}
+.legend div{display:flex;align-items:center;gap:5px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Check the available engagement route</h1>
+</div>
+
+<div class="table-wrap">
+<table>
+  <colgroup>
+    <col class="c-type"><col class="c-country"><col class="c-country"><col class="c-country"><col class="c-country"><col class="c-country"><col class="c-country">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="type">Engagement type</th>
+      <th>Malay&shy;sia</th><th>China</th><th>Hong Kong</th><th>Japan</th><th>Korea</th><th>Other APAC</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+</div>
+
+<div class="legend">
+  <div><span class="yes">✅</span> Available</div>
+  <div><span class="no">❌</span> Not available</div>
+</div>
+
+<script>
+const DATA=[
+ {name:"Full-time employment",cells:["y","y","y","y","y","n"],
+  what:"Permanent contract with an Xsolla local entity — no end date, full employee benefits."},
+ {name:"Fixed-term employment",cells:["y","n","n","y","y","n"],
+  what:"Employment contract with a set end date — a real employee, just for a limited period."},
+ {name:"Contractor",cells:["y","n","n","n","y","y"],
+  what:"B2B services agreement with an independent professional who invoices us — no salary or benefits."},
+ {name:"EOR employment",cells:["n","n","n","n","n","y"],
+  what:"A third-party Employer of Record legally employs the person for us where Xsolla has no entity."},
+ {name:"Student or intern",cells:["y","y-beijing","n","n","n","n"],
+  what:"Temporary learning placement with a mentor and a fixed duration, usually tied to a university programme."}
+];
+
+const tbody=document.getElementById('tbody');
+DATA.forEach(r=>{
+  const tr=document.createElement('tr');
+  tr.className='row-main';
+  tr.innerHTML='<td class="type"><span class="type-cell"><span class="chev">›</span>'+r.name+'</span></td>'+
+    r.cells.map(c=>{
+      if(c==='y')return '<td><span class="yes">✅</span></td>';
+      if(c==='n')return '<td><span class="no">❌</span></td>';
+      return '<td><span class="yes">✅</span><span class="note">Beijing<br>only</span></td>';
+    }).join('');
+
+  const d=document.createElement('tr');
+  d.className='detail';
+  d.innerHTML='<td colspan="7"><div class="detail-inner">'+r.what+'</div></td>';
+
+  tr.onclick=()=>{
+    const open=d.classList.contains('show');
+    document.querySelectorAll('.detail').forEach(x=>x.classList.remove('show'));
+    document.querySelectorAll('.row-main').forEach(x=>x.classList.remove('open'));
+    if(!open){d.classList.add('show');tr.classList.add('open');}
+  };
+
+  tbody.appendChild(tr);tbody.appendChild(d);
+});
+</script>
+
+</body>
+</html>
