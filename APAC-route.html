@@ -49,9 +49,9 @@ body{font-family:'Bai Jamjuree',sans-serif;background:#fff;color:#000;padding:20
 </head>
 <body>
 <div class="header">
-  <div class="header-eyebrow">Hiring process</div>
+  <div class="header-eyebrow">Hiring process &middot; APAC</div>
   <div class="header-title">From Open Role to First Day</div>
-  <div class="header-sub">Click any step to see details &mdash; you&rsquo;re currently on Step 1</div>
+  <div class="header-sub">Click any step to see details</div>
 </div>
 <div class="steps" id="steps"></div>
 <div id="detail"></div>
@@ -77,12 +77,12 @@ var STEPS=[
    title:"ZIP Offer Request",
    text:"Submit the salary and headcount through ZIP for approval.",
    apac:"Regional visa terms apply.",
-   link:{label:"ZIP Offer Request",icon:"link",href:""}},
+   link:{label:"ZIP Offer Request",icon:"link",href:"https://xsolla.zip.com/home?page=1"}},
   {num:6,short:"Offer &amp; Agreement",status:"upcoming",
    title:"Offer &amp; Agreement",
    text:"Raise an HRDESK ticket — HR drafts and sends the offer.",
    apac:"Regional templates apply.",
-   link:{label:"HR Service Desk Ticket",icon:"link",href:""}}
+   link:{label:"HR Service Desk Ticket",icon:"link",href:"https://xsolla.atlassian.net/servicedesk/customer/portal/1018"}}
 ];
 var sel=0;
 function render(){
@@ -96,11 +96,9 @@ function render(){
     if(i===sel)circCls+=' sel';
     var stepCls='step'+(isActive?' active':'')+(isDone?' done':'');
     var circContent=isDone?'<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10.5L8.5 14L15 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>':''+s.num;
-    var youHere=isCurrent?'<div class="you-here">You are here</div>':'';
     return '<div class="'+stepCls+'" data-idx="'+i+'">'+
       '<div class="'+circCls+'">'+circContent+'</div>'+
       '<div class="step-label">'+s.short+'</div>'+
-      youHere+
     '</div>';
   }).join('');
   var s=STEPS[sel];
