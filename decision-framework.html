@@ -116,69 +116,16 @@ var DATA=[
     ],
     approaches:[
       {
-        title:"Option A: Post + LinkedIn Recruiter",
+        title:"Post + LinkedIn Recruiter",
         items:[
           "Reach passive candidates who aren\u2019t actively looking",
           "Requires your time: 3\u20135 hours/week"
         ],
         cost:null
-      },
-      {
-        title:"Option B: Post + Agency",
-        items:[
-          "Agency sources passive candidates",
-          "You focus on interviewing"
-        ],
-        cost:"Agency fee from your department budget"
       }
     ],
     questions:[
-      "Do I have 3\u20135 hours/week to source on LinkedIn?",
-      "Or would I rather outsource sourcing to an agency?",
-      "What does my manager approve budget-wise?"
-    ],
-    result:null
-  },
-  {
-    icon:"\uD83D\uDD34",
-    title:"Urgent Need",
-    subtitle:"Must fill in <30 days, high business impact",
-    examples:["Critical backfill (someone just quit, team blocked)","Product launch dependency (hard deadline)","Compliance/regulatory requirement (must fill by date)","Senior/executive role (VP+, C-suite)"],
-    looks:[
-      "Must fill in <30 days",
-      "High business impact if role stays vacant",
-      "Can\u2019t wait for organic applicant flow"
-    ],
-    approaches:[
-      {
-        title:"If skills are common (e.g., Support Manager, Account Manager):",
-        items:[
-          "Post + Agency to accelerate search"
-        ],
-        cost:"Agency fee from your department budget"
-      },
-      {
-        title:"If skills are specialized (e.g., VP Engineering, Blockchain Architect):",
-        items:[
-          "Agency as primary approach",
-          "They have specialized networks for niche + urgent combinations"
-        ],
-        cost:"Agency fee from your department budget"
-      },
-      {
-        title:"Alternative (if you have strong network + bandwidth):",
-        items:[
-          "LinkedIn Recruiter sourcing",
-          "Requires significant time investment"
-        ],
-        cost:null
-      }
-    ],
-    questions:[
-      "What\u2019s the business cost of this role being vacant another month?",
-      "Do I have manager approval for agency budget?",
-      "Do I have a strong existing network in this space?",
-      "Am I realistically able to source often?"
+      "Do I have 3\u20135 hours/week to source on LinkedIn?"
     ],
     result:null
   }
@@ -207,7 +154,6 @@ function render(){
 
     return '<div class="card'+(isActive?' active':'')+'" data-idx="'+i+'">'+
       '<div class="card-top">'+
-        '<div class="card-icon">'+d.icon+'</div>'+
         '<div class="card-info">'+
           '<div class="card-title">'+d.title+'</div>'+
           '<div class="card-subtitle">'+d.subtitle+'</div>'+
